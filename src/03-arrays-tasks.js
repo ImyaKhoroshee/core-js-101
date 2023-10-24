@@ -200,10 +200,7 @@ function getTail(arr, n) {
  *    +'30,31,32,33,34'
  */
 function toCsvText(arr) {
-  let result = '';
-
-  arr.map((elem) => String(elem)).forEach((elem) => { result += `${elem}\n`; });
-  return result.replace(/\n$/m, '');
+  return arr.map((item) => item.join(',')).join('\n');
 }
 
 /**
@@ -237,14 +234,11 @@ function toArrayOfSquares(arr) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] => [ 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 ]
  */
 function getMovingSum(arr) {
-  let sum = 0;
-  const resulArr = [];
-
-  for (let i = 0; i < arr.length; i += 1) {
-    sum += arr[i];
-    resulArr.push(sum);
-  }
-  return resulArr;
+  return arr.reduce((acc, digit) => {
+    const sum = acc.length > 0 ? acc[acc.length - 1] + digit : digit;
+    acc.push(sum);
+    return acc;
+  }, []);
 }
 
 /**
@@ -277,13 +271,7 @@ function getSecondItems(arr) {
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
 function propagateItemsByPositionIndex(arr) {
-  const resultArr = [];
-  for (let i = 0; i < arr.length; i += 1) {
-    for (let j = 0; j < i + 1; j += 1) {
-      resultArr.push(arr[i]);
-    }
-  }
-  return resultArr;
+  return arr.map((elem, i) => new Array(i + 1).fill(elem)).flat();
 }
 
 /**
@@ -479,18 +467,10 @@ function getIdentityMatrix(n) {
  *     3, 3   => [ 3 ]
  */
 function getIntervalArray(start, end) {
-  let startPosition = start;
-  const resultArr = [];
-
-  if (startPosition === end) {
-    resultArr.push(startPosition);
-  } else {
-    for (let i = startPosition; i < end + 1; i += 1) {
-      resultArr.push(startPosition);
-      startPosition += 1;
-    }
-  }
-  return resultArr;
+  return Array.from(
+    { length: end - start + 1 },
+    (elem, i) => start + i,
+  );
 }
 
 /**
@@ -540,19 +520,17 @@ function distinct(arr) {
  *   }
  */
 function group(array, keySelector, valueSelector) {
-  const map = new Map();
-  const count = array.length;
+  return array.reduce((acc, elem) => {
+    const key = keySelector(elem);
+    const value = valueSelector(elem);
+    const values = acc.get(key) || [];
 
-  for (let key, i = 0; i < count; i += 1) {
-    key = keySelector(array[i]);
+    values.push(value);
 
-    if (map.has(key)) {
-      map.get(key).push(valueSelector(array[i]));
-    } else {
-      map.set(key, [valueSelector(array[i])]);
-    }
-  }
-  return map;
+    acc.set(key, values);
+
+    return acc;
+  }, new Map());
 }
 
 /**

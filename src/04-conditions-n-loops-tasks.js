@@ -429,8 +429,35 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const minLengthPath = pathes.sort((a, b) => b.length - a.length).pop().split('/');
+
+  const tempArr = [];
+
+  for (let i = 0; i < pathes.length; i += 1) {
+    tempArr.push(pathes[i].split('/'));
+  }
+
+  let commonDirPath = '';
+  let end = 1;
+
+  while (commonDirPath === '') {
+    for (let j = 0; j < minLengthPath.length; j += 1) {
+      for (let k = 0; k < tempArr.length; k += 1) {
+        if (minLengthPath[end] !== tempArr[k][end]) {
+          if (minLengthPath[end - 1] !== '' && tempArr[k][end - 1] === '') {
+            commonDirPath += '';
+            return commonDirPath;
+          }
+          commonDirPath += '/';
+          return commonDirPath;
+        }
+      }
+      commonDirPath += `/${minLengthPath[end]}`;
+      end += 1;
+    }
+  }
+  return commonDirPath;
 }
 
 
@@ -452,8 +479,23 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const result = [];
+
+  for (let i = 0; i < m1.length; i += 1) {
+    result[i] = [];
+  }
+  for (let a = 0; a < m1.length; a += 1) {
+    for (let b = 0; b < m1.length; b += 1) {
+      let production = 0;
+
+      for (let c = 0; c < m2.length; c += 1) {
+        production += m1[a][c] * m2[c][b];
+      }
+      result[a].push(production);
+    }
+  }
+  return result;
 }
 
 
@@ -487,8 +529,56 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  if (position[0][0] === 'X' && position[1][1] === 'X' && position[2][2] === 'X') {
+    return position[0][0];
+  }
+  if (position[0][0] === '0' && position[1][1] === '0' && position[2][2] === '0') {
+    return position[0][0];
+  }
+  if (position[0][0] === 'X' && position[0][1] === 'X' && position[0][2] === 'X') {
+    return position[0][0];
+  }
+  if (position[0][0] === '0' && position[0][1] === '0' && position[0][2] === '0') {
+    return position[0][0];
+  }
+  if (position[0][0] === 'X' && position[1][0] === 'X' && position[2][0] === 'X') {
+    return position[0][0];
+  }
+  if (position[0][0] === '0' && position[1][0] === '0' && position[2][0] === '0') {
+    return position[0][0];
+  }
+  if (position[1][0] === 'X' && position[1][1] === 'X' && position[1][2] === 'X') {
+    return position[1][0];
+  }
+  if (position[1][0] === '0' && position[1][1] === '0' && position[1][2] === '0') {
+    return position[1][0];
+  }
+  if (position[2][0] === 'X' && position[2][1] === 'X' && position[2][2] === 'X') {
+    return position[2][0];
+  }
+  if (position[2][0] === '0' && position[2][1] === '0' && position[2][2] === '0') {
+    return position[2][0];
+  }
+  if (position[0][1] === 'X' && position[1][1] === 'X' && position[2][1] === 'X') {
+    return position[0][1];
+  }
+  if (position[0][1] === '0' && position[1][1] === '0' && position[2][1] === '0') {
+    return position[0][1];
+  }
+  if (position[0][2] === 'X' && position[1][1] === 'X' && position[2][0] === 'X') {
+    return position[0][2];
+  }
+  if (position[0][2] === '0' && position[1][1] === '0' && position[2][0] === '0') {
+    return position[0][2];
+  }
+  if (position[0][2] === 'X' && position[1][2] === 'X' && position[2][2] === 'X') {
+    return position[0][2];
+  }
+  if (position[0][2] === '0' && position[1][2] === '0' && position[2][2] === '0') {
+    return position[0][2];
+  }
+  return undefined;
 }
 
 
